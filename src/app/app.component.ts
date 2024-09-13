@@ -2,11 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { DataService } from '../services/data.service';
 import { NgForOf } from '@angular/common';
+import more from 'highcharts/highcharts-more'
 import * as Highcharts from 'highcharts';
+more(Highcharts);
 
-declare var require: any;
-require('highcharts/highcharts-more')(Highcharts);
-require('highcharts/modules/windbarb')(Highcharts);
 
 @Component({
   selector: 'app-root',
