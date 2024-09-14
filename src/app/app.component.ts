@@ -2,7 +2,10 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { DataService } from '../services/data.service';
 import { NgForOf, NgIf } from '@angular/common';
-import { getLastXDaysForSensor } from './utils/data-station';
+import {
+  getLastXDaysForSensor,
+  getLastXHoursForSensorInBlocks,
+} from './utils/data-station';
 import more from 'highcharts/highcharts-more';
 import * as Highcharts from 'highcharts';
 import { ILastSensorDataPoint } from './interfaces/chart.interface';
@@ -22,7 +25,7 @@ export class AppComponent implements OnInit {
   public isDaily: boolean = true;
   public selectedPoint: any;
   public lastPrecipitationDaily: ILastSensorDataPoint[] = [];
-  public lastPrecipitationHourly: ILastSensorDataPoint[] = [];
+  public lastPrecipitationHourly: ILastSensorDataPoint[][] = [];
 
   constructor(private dataService: DataService) {}
 
@@ -67,10 +70,9 @@ export class AppComponent implements OnInit {
       7
     );
 
-    this.lastPrecipitationHourly = getLastXDaysForSensor(
+    this.lastPrecipitationHourly = getLastXHoursForSensorInBlocks(
       point.station.hourly,
-      'Precipitation',
-      12
+      'Precipitation'
     );
   }
 }

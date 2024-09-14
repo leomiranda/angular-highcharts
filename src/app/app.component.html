@@ -18,11 +18,12 @@
   <app-precipitation-chart
     *ngIf="!isDaily"
     [data]="lastPrecipitationHourly"
+    [isDaily]="false"
   ></app-precipitation-chart>
 
   <div>
     <button (click)="toggleDailyHourlyView()">
-      Toggle to {{ isDaily ? "Hourly" : "Daily" }}
+      Trocar por {{ isDaily ? "Hora" : "Dia" }}
     </button>
   </div>
 </main>

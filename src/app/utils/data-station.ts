@@ -40,3 +40,29 @@ export function getLastXDaysForSensor(
   const combinedData = combineDataWithDates(station, sensor);
   return getLastXDays(combinedData, days);
 }
+
+export function splitHourlyDataIntoBlocks(
+  data: { date: Date; value: number }[],
+  hourPerBlock: number = 12,
+  totalBlocks: number = 4
+): ILastSensorDataPoint[][] {
+  const reversedArray = [...data].reverse();
+  const firstItems = reversedArray.slice(0, totalBlocks * hourPerBlock);
+
+  const blocks = [];
+  for (let i = 0; i < totalBlocks; i++) {
+    blocks.push(firstItems.slice(i * hourPerBlock, (i + 1) * hourPerBlock));
+  }
+
+  return blocks;
+}
+
+export function getLastXHoursForSensorInBlocks(
+  station: IStation,
+  sensor: StationSensorName,
+  hourPerBlock: number = 12,
+  totalBlocks: number = 4
+): ILastSensorDataPoint[][] {
+  const combinedData = combineDataWithDates(station, sensor);
+  return splitHourlyDataIntoBlocks(combinedData, hourPerBlock, totalBlocks);
+}
