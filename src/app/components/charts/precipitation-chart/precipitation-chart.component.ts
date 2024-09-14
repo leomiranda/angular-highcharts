@@ -43,11 +43,39 @@ export class PrecipitationChartComponent implements OnInit, OnDestroy {
       title: {
         text: 'Precipitation Chart',
       },
+      // plotOptions: {
+      //   column: {
+      //     pointPadding: 0,
+      //     borderWidth: 1,
+      //     groupPadding: 0.01,
+      //   },
+      // },
       xAxis: {
         type: 'datetime',
         title: {
           text: 'Date',
         },
+        // labels: {
+        //   useHTML: true,
+        //   formatter: function () {
+        //     const date = new Date(this.value);
+        //     date.setDate(date.getDate() + 1);
+        //     const weekday = date.toLocaleDateString('en-US', {
+        //       weekday: 'short',
+        //     });
+        //     const formattedDate = `${String(date.getDate()).padStart(
+        //       2,
+        //       '0'
+        //     )}/${String(date.getMonth() + 1).padStart(2, '0')}`;
+        //     return `<div style="text-align: center;">
+        //               <div style="font-size: 10px;">${formattedDate}</div>
+        //               <div style="font-size: 14px; font-weight: bold;">${weekday}</div>
+        //             </div>`;
+        //   },
+        // },
+        // minTickInterval: 24 * 3600 * 1000,
+        minTickInterval: 1 * 3600 * 1000,
+        startOnTick: true,
       },
       yAxis: {
         title: {

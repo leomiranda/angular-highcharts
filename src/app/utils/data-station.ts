@@ -5,7 +5,7 @@ import {
   StationSensorName,
 } from '../interfaces/station.interface';
 
-function combineDataWithDates(
+export function combineDataWithDates(
   station: IStation,
   sensor: StationSensorName
 ): ILastSensorDataPoint[] {

@@ -11,5 +11,18 @@
     </select>
   </div>
 
-  <app-precipitation-chart [data]="lastPrecipitation"></app-precipitation-chart>
+  <app-precipitation-chart
+    *ngIf="isDaily"
+    [data]="lastPrecipitationDaily"
+  ></app-precipitation-chart>
+  <app-precipitation-chart
+    *ngIf="!isDaily"
+    [data]="lastPrecipitationHourly"
+  ></app-precipitation-chart>
+
+  <div>
+    <button (click)="toggleDailyHourlyView()">
+      Toggle to {{ isDaily ? "Hourly" : "Daily" }}
+    </button>
+  </div>
 </main>
