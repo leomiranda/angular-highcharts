@@ -53,6 +53,8 @@ export class PrecipitationChartComponent implements OnInit, OnDestroy {
         title: {
           text: 'Precipitation (mm)',
         },
+        min: 0,
+        minRange: 1,
       },
       series: [
         {
