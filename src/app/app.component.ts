@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { DataService } from '../services/data.service';
-import { NgForOf } from '@angular/common';
+import { NgForOf, NgIf } from '@angular/common';
 import { getLastXDaysForSensor } from './utils/data-station';
 import more from 'highcharts/highcharts-more';
 import * as Highcharts from 'highcharts';
@@ -12,15 +12,17 @@ more(Highcharts);
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, NgForOf, PrecipitationChartComponent],
+  imports: [RouterOutlet, NgForOf, PrecipitationChartComponent, NgIf],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
 export class AppComponent implements OnInit {
   public title = 'pleno-angular-test';
   public points: any[] = [];
-  selectedPoint: any;
-  lastPrecipitation: ILastSensorDataPoint[] = [];
+  public isDaily: boolean = true;
+  public selectedPoint: any;
+  public lastPrecipitationDaily: ILastSensorDataPoint[] = [];
+  public lastPrecipitationHourly: ILastSensorDataPoint[] = [];
 
   constructor(private dataService: DataService) {}
 
@@ -44,7 +46,11 @@ export class AppComponent implements OnInit {
     });
   }
 
-  onPointChange(event: any) {
+  public toggleDailyHourlyView() {
+    this.isDaily = !this.isDaily;
+  }
+
+  public onPointChange(event: any) {
     const selectedId = event.target.value;
     this.selectedPoint = this.points.find(
       (point) => point.location.id === selectedId
@@ -55,10 +61,16 @@ export class AppComponent implements OnInit {
   }
 
   private updateChartData(point: any) {
-    this.lastPrecipitation = getLastXDaysForSensor(
+    this.lastPrecipitationDaily = getLastXDaysForSensor(
       point.station.daily,
       'Precipitation',
       7
+    );
+
+    this.lastPrecipitationHourly = getLastXDaysForSensor(
+      point.station.hourly,
+      'Precipitation',
+      12
     );
   }
 }
