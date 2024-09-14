@@ -1,9 +1,15 @@
 <main>
   <h1>Angular Test</h1>
-
-  <div *ngFor="let point of points" class="point">
-    <div>Id: {{ point.location.id }}</div>
-    <div>Nome: {{ point.location.nome }}</div>
-    <br>
+  <div>
+    <select
+      (change)="onPointChange($event)"
+      [value]="selectedPoint?.location.id"
+    >
+      <option *ngFor="let point of points" [value]="point.location.id">
+        {{ point.location.nome }}
+      </option>
+    </select>
   </div>
+
+  <app-precipitation-chart [data]="lastPrecipitation"></app-precipitation-chart>
 </main>
