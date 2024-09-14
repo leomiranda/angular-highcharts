@@ -7,7 +7,7 @@ import {
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
-import { LastsSensorDataPoint } from '../../../interfaces/chart.interface';
+import { ILastSensorDataPoint } from '../../../interfaces/chart.interface';
 import more from 'highcharts/highcharts-more';
 import * as Highcharts from 'highcharts';
 more(Highcharts);
@@ -20,7 +20,7 @@ more(Highcharts);
   styleUrl: './precipitation-chart.component.scss',
 })
 export class PrecipitationChartComponent implements OnInit, OnDestroy {
-  @Input() data: LastsSensorDataPoint[] = [];
+  @Input() data: ILastSensorDataPoint[] = [];
 
   @ViewChild('chartContainer', { static: true }) chartContainer!: ElementRef;
 
@@ -38,7 +38,7 @@ export class PrecipitationChartComponent implements OnInit, OnDestroy {
     }
   }
 
-  private createChart(data: LastsSensorDataPoint[]) {
+  private createChart(data: ILastSensorDataPoint[]) {
     const options: Highcharts.Options = {
       title: {
         text: 'Precipitation Chart',
