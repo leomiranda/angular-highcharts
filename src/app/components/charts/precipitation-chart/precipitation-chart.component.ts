@@ -116,6 +116,7 @@ export class PrecipitationChartComponent implements OnInit, OnDestroy {
         min: 0,
         minRange: 1,
       },
+      colors: ['#3667a6'],
       series: [
         {
           type: 'column',

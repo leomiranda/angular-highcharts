@@ -1,52 +1,69 @@
-<main>
-  <h1>Angular Test</h1>
-  <div>
-    <select
-      (change)="onPointChange($event)"
-      [value]="selectedPoint?.location.id"
-    >
-      <option *ngFor="let point of points" [value]="point.location.id">
-        {{ point.location.nome }}
-      </option>
-    </select>
-  </div>
+<div class="forecast-app">
+  <div class="container">
+    <main>
+      <h1 class="app-title">Angular Test</h1>
 
-  <div>
-    <button (click)="toggleForecastStationView()">
-      {{ isForecast ? "Histórico" : "Previsão" }}
-    </button>
-  </div>
+      <div class="controls">
+        <div class="select-wrapper">
+          <label for="points">Ponto:</label>
+          <select
+            (change)="onPointChange($event)"
+            [value]="selectedPoint?.location.id"
+            class="select"
+          >
+            <option *ngFor="let point of points" [value]="point.location.id">
+              {{ point.location.nome }}
+            </option>
+          </select>
+        </div>
 
-  <div *ngIf="isForecast">
-    <h1>Previsão do precipitação</h1>
+        <button (click)="toggleForecastStationView()" class="btn large">
+          {{ isForecast ? "Histórico" : "Previsão" }}
+        </button>
+      </div>
 
-    <app-precipitation-chart
-      *ngIf="isDaily"
-      [data]="nextPrecipitationDaily"
-    ></app-precipitation-chart>
-    <app-precipitation-chart
-      *ngIf="!isDaily"
-      [data]="nextPrecipitationHourly"
-      [isDaily]="false"
-    ></app-precipitation-chart>
-  </div>
+      <div class="chart-container" *ngIf="isForecast">
+        <h2 class="chart-title">Previsão do precipitação</h2>
 
-  <div *ngIf="!isForecast">
-    <h1>Histórico de precipitação</h1>
-    <app-precipitation-chart
-      *ngIf="isDaily"
-      [data]="lastPrecipitationDaily"
-    ></app-precipitation-chart>
-    <app-precipitation-chart
-      *ngIf="!isDaily"
-      [data]="lastPrecipitationHourly"
-      [isDaily]="false"
-    ></app-precipitation-chart>
-  </div>
+        <app-precipitation-chart
+          *ngIf="isDaily"
+          [data]="nextPrecipitationDaily"
+          class="precipitation-chart"
+        ></app-precipitation-chart>
+        <app-precipitation-chart
+          *ngIf="!isDaily"
+          [data]="nextPrecipitationHourly"
+          [isDaily]="false"
+          class="precipitation-chart"
+        ></app-precipitation-chart>
+      </div>
 
-  <div>
-    <button (click)="toggleDailyHourlyView()">
-      Por {{ isDaily ? "Hora" : "Dia" }}
-    </button>
+      <div class="chart-container" *ngIf="!isForecast">
+        <h2 class="chart-title">Histórico de precipitação</h2>
+        <app-precipitation-chart
+          *ngIf="isDaily"
+          [data]="lastPrecipitationDaily"
+          class="precipitation-chart"
+        ></app-precipitation-chart>
+        <app-precipitation-chart
+          *ngIf="!isDaily"
+          [data]="lastPrecipitationHourly"
+          [isDaily]="false"
+          class="precipitation-chart"
+        ></app-precipitation-chart>
+      </div>
+    </main>
+    <footer>
+      <div class="controls">
+        <button (click)="toggleDailyHourlyView()" class="btn large">
+          Por {{ isDaily ? "Hora" : "Dia" }}
+        </button>
+      </div>
+      <img
+        class="logo"
+        src="/assets/images/meteoblue-logo.svg"
+        alt="Meteoblue logo"
+      />
+    </footer>
   </div>
-</main>
+</div>
