@@ -1,1 +1,169 @@
-/* You can add global styles to this file, and also import other style files */
+@import "vars.scss";
+
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,700;1,400&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  min-height: 100%;
+  font-family: $font-family-main;
+  font-size: $font-size-base;
+  line-height: 1.6;
+  color: $text-color;
+  background-image: linear-gradient(
+    to right top,
+    #b9d7ea,
+    #c7e0ee,
+    #d6eaf2,
+    #e6f2f6,
+    #f7fbfc
+  );
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: $font-family-headings;
+  margin-bottom: $spacing-medium;
+}
+
+a {
+  color: $primary-color;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 $spacing-medium;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.mb-1 {
+  margin-bottom: $spacing-small;
+}
+.mb-2 {
+  margin-bottom: $spacing-medium;
+}
+.mb-3 {
+  margin-bottom: $spacing-large;
+}
+.mb-4 {
+  margin-bottom: $spacing-xlarge;
+}
+
+.btn {
+  align-items: center;
+  appearance: none;
+  background-image: radial-gradient(
+    100% 100% at 100% 0,
+    $secondary-color 0,
+    $primary-color 100%
+  );
+  border: 0;
+  border-radius: 6px;
+  box-shadow: rgba(45, 35, 66, 0.4) 0 2px 4px,
+    rgba(45, 35, 66, 0.3) 0 7px 13px -3px, rgba(58, 65, 111, 0.5) 0 -3px 0 inset;
+  box-sizing: border-box;
+  color: $light-text-color;
+  cursor: pointer;
+  display: inline-flex;
+  height: 42px;
+  justify-content: center;
+  line-height: 1;
+  list-style: none;
+  overflow: hidden;
+  padding-left: $spacing-medium;
+  padding-right: $spacing-medium;
+  position: relative;
+  text-align: left;
+  text-decoration: none;
+  transition: box-shadow 0.15s, transform 0.15s;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  white-space: nowrap;
+  will-change: box-shadow, transform;
+  font-size: $font-size-base;
+
+  &:hover {
+    box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px,
+      rgba(45, 35, 66, 0.3) 0 7px 13px -3px, $primary-color 0 -3px 0 inset;
+    transform: translateY(-2px);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &.large {
+    height: 48px;
+    font-size: $font-size-large;
+    padding-left: $spacing-large;
+    padding-right: $spacing-large;
+  }
+
+  .btn-icon {
+    font-size: 1.2em;
+    margin: 0 $spacing-small;
+  }
+}
+
+.select {
+  appearance: none;
+  border: 0;
+  outline: 0;
+  width: 20rem;
+  padding: 1rem 4rem 1rem 1rem;
+  background: $arrow-icon no-repeat right 0.8em center / 1.4em,
+    linear-gradient(to left, $secondary-color 3em, $primary-color 3em);
+  color: white;
+  border-radius: 0.25em;
+  box-shadow: 0 0 1em 0 rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  &::-ms-expand {
+    display: none;
+  }
+  &:focus {
+    outline: none;
+  }
+}
+
+@media (max-width: $breakpoint-tablet) {
+  .btn {
+    width: 100%;
+    margin-bottom: $spacing-small;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  .select {
+    width: 100%;
+    margin-bottom: $spacing-medium;
+  }
+}

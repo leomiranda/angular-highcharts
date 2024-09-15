@@ -1,0 +1,26 @@
+@import "vars.scss";
+
+.precipitation-chart {
+  border-radius: $border-radius;
+  padding: $spacing-medium;
+  margin-bottom: $spacing-large;
+}
+
+.chart-container {
+  width: 100%;
+  height: 400px;
+  margin-bottom: $spacing-medium;
+}
+
+.chart-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@media (max-width: $breakpoint-tablet) {
+  .chart-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
