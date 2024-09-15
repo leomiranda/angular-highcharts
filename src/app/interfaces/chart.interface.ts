@@ -1,4 +1,4 @@
-export interface ILastSensorDataPoint {
+export interface IDataChart {
   date: Date;
   value: number;
 }
