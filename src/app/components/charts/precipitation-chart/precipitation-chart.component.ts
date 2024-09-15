@@ -8,7 +8,7 @@ import {
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
-import { ILastSensorDataPoint } from '../../../interfaces/chart.interface';
+import { IDataChart } from '../../../interfaces/chart.interface';
 import more from 'highcharts/highcharts-more';
 import * as Highcharts from 'highcharts';
 import { NgIf } from '@angular/common';
@@ -22,20 +22,18 @@ more(Highcharts);
   styleUrl: './precipitation-chart.component.scss',
 })
 export class PrecipitationChartComponent implements OnInit, OnDestroy {
-  @Input() data: ILastSensorDataPoint[] | ILastSensorDataPoint[][] = [];
+  @Input() data: IDataChart[] | IDataChart[][] = [];
   @Input() isDaily: boolean = true;
   @ViewChild('chartContainer', { static: true }) chartContainer!: ElementRef;
 
   private chart!: Highcharts.Chart;
-  public chartDataArray = signal<ILastSensorDataPoint[][]>([]);
-  public chartData = signal<ILastSensorDataPoint[]>([]);
+  public chartDataArray = signal<IDataChart[][]>([]);
+  public chartData = signal<IDataChart[]>([]);
   public currentHourBlock = signal(0);
   public hourBlocks: { date: Date; value: number }[][] = [];
 
   ngOnInit() {
-    this.chartDataArray.set(
-      this.isDaily ? [] : (this.data as ILastSensorDataPoint[][])
-    );
+    this.chartDataArray.set(this.isDaily ? [] : (this.data as IDataChart[][]));
     this.updateChartData();
     this.createChart();
   }
@@ -50,8 +48,8 @@ export class PrecipitationChartComponent implements OnInit, OnDestroy {
 
   updateChartData() {
     const currentData = this.isDaily
-      ? (this.data as ILastSensorDataPoint[])
-      : (this.data[this.currentHourBlock()] as ILastSensorDataPoint[]);
+      ? (this.data as IDataChart[])
+      : (this.data[this.currentHourBlock()] as IDataChart[]);
     this.chartData.set(currentData);
   }
 
@@ -64,8 +62,8 @@ export class PrecipitationChartComponent implements OnInit, OnDestroy {
 
   previousHourBlock() {
     const currentData = this.isDaily
-      ? (this.data as ILastSensorDataPoint[])
-      : (this.data[this.currentHourBlock()] as ILastSensorDataPoint[]);
+      ? (this.data as IDataChart[])
+      : (this.data[this.currentHourBlock()] as IDataChart[]);
     if (this.currentHourBlock() < currentData.length - 1) {
       this.currentHourBlock.update((v) => v + 1);
     }
@@ -139,9 +137,10 @@ export class PrecipitationChartComponent implements OnInit, OnDestroy {
         ? this.data
         : this.data[this.currentHourBlock()];
       this.chart.series[0].setData(
-        (currentData as ILastSensorDataPoint[]).map(
-          (point: ILastSensorDataPoint) => [point.date.getTime(), point.value]
-        )
+        (currentData as IDataChart[]).map((point: IDataChart) => [
+          point.date.getTime(),
+          point.value,
+        ])
       );
     }
   }

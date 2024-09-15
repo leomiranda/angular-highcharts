@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { DataService } from '../services/data.service';
 import { NgForOf, NgIf } from '@angular/common';
@@ -8,8 +8,13 @@ import {
 } from './utils/data-station';
 import more from 'highcharts/highcharts-more';
 import * as Highcharts from 'highcharts';
-import { ILastSensorDataPoint } from './interfaces/chart.interface';
+import { IDataChart } from './interfaces/chart.interface';
 import { PrecipitationChartComponent } from './components/charts/precipitation-chart/precipitation-chart.component';
+import {
+  getLastXHoursForForecastInBlocks,
+  getNextSevenForecastDays,
+} from './utils/data-forecast';
+import { IData } from './interfaces/data.interface';
 more(Highcharts);
 
 @Component({
@@ -21,11 +26,14 @@ more(Highcharts);
 })
 export class AppComponent implements OnInit {
   public title = 'pleno-angular-test';
-  public points: any[] = [];
+  public points: IData[] = [];
   public isDaily: boolean = true;
+  public isForecast: boolean = true;
   public selectedPoint: any;
-  public lastPrecipitationDaily: ILastSensorDataPoint[] = [];
-  public lastPrecipitationHourly: ILastSensorDataPoint[][] = [];
+  public lastPrecipitationDaily: IDataChart[] = [];
+  public lastPrecipitationHourly: IDataChart[][] = [];
+  public nextPrecipitationDaily: IDataChart[] = [];
+  public nextPrecipitationHourly: IDataChart[][] = [];
 
   constructor(private dataService: DataService) {}
 
@@ -41,6 +49,7 @@ export class AppComponent implements OnInit {
           uniqueIds.add(point.location.id);
         }
       });
+      console.log('this.points:', this.points);
 
       if (this.points.length > 0) {
         this.selectedPoint = this.points[0];
@@ -51,6 +60,10 @@ export class AppComponent implements OnInit {
 
   public toggleDailyHourlyView() {
     this.isDaily = !this.isDaily;
+  }
+
+  public toggleForecastStationView() {
+    this.isForecast = !this.isForecast;
   }
 
   public onPointChange(event: any) {
@@ -73,6 +86,14 @@ export class AppComponent implements OnInit {
     this.lastPrecipitationHourly = getLastXHoursForSensorInBlocks(
       point.station.hourly,
       'Precipitation'
+    );
+
+    this.nextPrecipitationDaily = getNextSevenForecastDays(
+      point.forecast.data_day
+    );
+
+    this.nextPrecipitationHourly = getLastXHoursForForecastInBlocks(
+      point.forecast.data_1h
     );
   }
 }

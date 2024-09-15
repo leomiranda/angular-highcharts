@@ -11,19 +11,42 @@
     </select>
   </div>
 
-  <app-precipitation-chart
-    *ngIf="isDaily"
-    [data]="lastPrecipitationDaily"
-  ></app-precipitation-chart>
-  <app-precipitation-chart
-    *ngIf="!isDaily"
-    [data]="lastPrecipitationHourly"
-    [isDaily]="false"
-  ></app-precipitation-chart>
+  <div>
+    <button (click)="toggleForecastStationView()">
+      {{ isForecast ? "Histórico" : "Previsão" }}
+    </button>
+  </div>
+
+  <div *ngIf="isForecast">
+    <h1>Previsão do precipitação</h1>
+
+    <app-precipitation-chart
+      *ngIf="isDaily"
+      [data]="nextPrecipitationDaily"
+    ></app-precipitation-chart>
+    <app-precipitation-chart
+      *ngIf="!isDaily"
+      [data]="nextPrecipitationHourly"
+      [isDaily]="false"
+    ></app-precipitation-chart>
+  </div>
+
+  <div *ngIf="!isForecast">
+    <h1>Histórico de precipitação</h1>
+    <app-precipitation-chart
+      *ngIf="isDaily"
+      [data]="lastPrecipitationDaily"
+    ></app-precipitation-chart>
+    <app-precipitation-chart
+      *ngIf="!isDaily"
+      [data]="lastPrecipitationHourly"
+      [isDaily]="false"
+    ></app-precipitation-chart>
+  </div>
 
   <div>
     <button (click)="toggleDailyHourlyView()">
-      Trocar por {{ isDaily ? "Hora" : "Dia" }}
+      Por {{ isDaily ? "Hora" : "Dia" }}
     </button>
   </div>
 </main>
