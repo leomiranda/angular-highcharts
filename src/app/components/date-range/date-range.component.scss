@@ -1,0 +1,50 @@
+@import "vars.scss";
+
+.date-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: $border-radius;
+  margin-bottom: $spacing-medium;
+}
+
+.calendar-group {
+  display: flex;
+  align-items: center;
+}
+
+.calendar-date {
+  display: flex;
+  align-items: center;
+  background-color: $secondary-color;
+  border-radius: $border-radius;
+  color: $light-text-color;
+  padding: $spacing-small;
+  box-shadow: $box-shadow;
+}
+
+.day {
+  font-size: $font-size-xxxlarge;
+  line-height: $font-size-xxxlarge;
+  font-weight: bold;
+  margin-right: $spacing-small;
+}
+
+.month-year {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.month,
+.year {
+  font-size: $font-size-small;
+  text-transform: capitalize;
+  margin-top: -2px;
+}
+
+.separator {
+  margin: 0 $spacing-medium;
+  color: $tertiary-color;
+  font-weight: bold;
+}

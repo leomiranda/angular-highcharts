@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { DataService } from '../services/data.service';
 import { NgForOf, NgIf } from '@angular/common';
@@ -15,12 +15,19 @@ import {
   getNextSevenForecastDays,
 } from './utils/data-forecast';
 import { IData } from './interfaces/data.interface';
+import { DateRangeComponent } from './components/date-range/date-range.component';
 more(Highcharts);
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, NgForOf, PrecipitationChartComponent, NgIf],
+  imports: [
+    RouterOutlet,
+    NgForOf,
+    NgIf,
+    PrecipitationChartComponent,
+    DateRangeComponent,
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
@@ -34,8 +41,12 @@ export class AppComponent implements OnInit {
   public lastPrecipitationHourly: IDataChart[][] = [];
   public nextPrecipitationDaily: IDataChart[] = [];
   public nextPrecipitationHourly: IDataChart[][] = [];
+  public chartDates: Date[] = [];
 
-  constructor(private dataService: DataService) {}
+  constructor(
+    private dataService: DataService,
+    private cdref: ChangeDetectorRef
+  ) {}
 
   ngOnInit() {
     this.dataService.getData().subscribe((data: any) => {
@@ -56,6 +67,14 @@ export class AppComponent implements OnInit {
         this.updateChartData(this.selectedPoint);
       }
     });
+  }
+
+  ngAfterContentChecked() {
+    this.cdref.detectChanges();
+  }
+
+  onDatesChange(dates: Date[]): void {
+    this.chartDates = dates;
   }
 
   public toggleDailyHourlyView() {
@@ -93,7 +112,9 @@ export class AppComponent implements OnInit {
     );
 
     this.nextPrecipitationHourly = getLastXHoursForForecastInBlocks(
-      point.forecast.data_1h
+      point.forecast.data_1h,
+      12,
+      14
     );
   }
 }

@@ -1,0 +1,20 @@
+<div class="date-display" [ngClass]="{ 'single-date': !isDateRange }">
+  <ng-container *ngIf="formattedDates.length > 0; else noDate">
+    <div
+      class="calendar-group"
+      *ngFor="let date of formattedDates; let last = last"
+    >
+      <div class="calendar-date">
+        <span class="day">{{ date.day }}</span>
+        <div class="month-year">
+          <span class="month">{{ date.month }}</span>
+          <span class="year">{{ date.year }}</span>
+        </div>
+      </div>
+      <span class="separator" *ngIf="!last"> - </span>
+    </div>
+  </ng-container>
+  <ng-template #noDate>
+    <span class="separator"> - </span>
+  </ng-template>
+</div>

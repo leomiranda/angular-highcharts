@@ -19,5 +19,10 @@ export function getLastXHoursForForecastInBlocks(
   totalBlocks: number = 4
 ): IDataChart[][] {
   const combinedData = combineForecastDataWithDates(data);
-  return splitHourlyDataIntoBlocks(combinedData, hourPerBlock, totalBlocks);
+  return splitHourlyDataIntoBlocks(
+    combinedData,
+    hourPerBlock,
+    totalBlocks,
+    false
+  );
 }
