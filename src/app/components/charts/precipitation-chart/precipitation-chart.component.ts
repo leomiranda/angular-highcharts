@@ -1,5 +1,6 @@
 import {
   Component,
+  computed,
   ElementRef,
   EventEmitter,
   Input,
@@ -14,6 +15,7 @@ import { IDataChart } from '../../../interfaces/chart.interface';
 import more from 'highcharts/highcharts-more';
 import * as Highcharts from 'highcharts';
 import { NgIf } from '@angular/common';
+import { precipitationOptionsChart } from '../../../utils/data';
 more(Highcharts);
 
 @Component({
@@ -31,14 +33,22 @@ export class PrecipitationChartComponent implements OnInit, OnDestroy {
   private chartContainer!: ElementRef;
   @Output() datesChange = new EventEmitter<Date[]>();
 
-  public chartDataArray = signal<IDataChart[][]>([]);
-  public chartData = signal<IDataChart[]>([]);
-  public currentHourBlock = signal(0);
-
   private chart!: Highcharts.Chart;
 
+  public readonly chartDataArray = computed(() =>
+    this.isDaily ? [] : (this.data as IDataChart[][])
+  );
+
+  public readonly chartData = computed(() => {
+    const currentData = this.isDaily
+      ? (this.data as IDataChart[])
+      : (this.data[this.currentHourBlock()] as IDataChart[]);
+    return currentData;
+  });
+
+  public currentHourBlock = signal(0);
+
   ngOnInit() {
-    this.chartDataArray.set(this.isDaily ? [] : (this.data as IDataChart[][]));
     this.updateChartData();
     this.createChart();
   }
@@ -75,11 +85,7 @@ export class PrecipitationChartComponent implements OnInit, OnDestroy {
   }
 
   private updateChartData() {
-    const currentData = this.isDaily
-      ? (this.data as IDataChart[])
-      : (this.data[this.currentHourBlock()] as IDataChart[]);
-    this.chartData.set(currentData);
-    this.emitDates(currentData as IDataChart[]);
+    this.emitDates(this.chartData());
   }
 
   private createChart() {

@@ -10,7 +10,7 @@
   padding: 0 $spacing-medium;
 }
 
-.header {
+header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -76,7 +76,7 @@ footer {
 }
 
 @media (max-width: $breakpoint-tablet) {
-  .header {
+  header {
     flex-direction: column;
   }
   .controls {
