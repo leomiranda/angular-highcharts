@@ -76,7 +76,7 @@ footer {
 }
 
 @media (max-width: $breakpoint-tablet) {
-  .header {
+  header {
     flex-direction: column;
   }
   .controls {
