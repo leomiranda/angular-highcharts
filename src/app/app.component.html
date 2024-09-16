@@ -1,10 +1,10 @@
 <div class="forecast-app">
   <div class="container">
     <main>
-      <div class="header">
+      <header>
         <h1>Precipitações</h1>
         <app-date-range [dates]="chartDates"></app-date-range>
-      </div>
+      </header>
 
       <div class="controls">
         <div class="select-wrapper">
@@ -25,49 +25,44 @@
         </button>
       </div>
 
-      <div class="chart-container" *ngIf="isForecast">
-        <h2 class="chart-title">Previsão do precipitação</h2>
+      <ng-container *ngIf="selectedPoint">
+        <div class="chart-container" *ngIf="isForecast; else historicalChart">
+          <h2 class="chart-title">Previsão de precipitação</h2>
 
-        <app-precipitation-chart
-          *ngIf="isDaily"
-          [data]="nextPrecipitationDaily"
-          [isForecast]="true"
-          (datesChange)="onDatesChange($event)"
-          class="precipitation-chart"
-        ></app-precipitation-chart>
-        <app-precipitation-chart
-          *ngIf="!isDaily"
-          [data]="nextPrecipitationHourly"
-          [isForecast]="true"
-          [isDaily]="false"
-          (datesChange)="onDatesChange($event)"
-          class="precipitation-chart"
-        ></app-precipitation-chart>
-      </div>
+          <app-precipitation-chart
+            [data]="isDaily ? nextPrecipitationDaily : nextPrecipitationHourly"
+            [isForecast]="true"
+            [isDaily]="isDaily"
+            (datesChange)="onDatesChange($event)"
+            class="precipitation-chart"
+          ></app-precipitation-chart>
+        </div>
 
-      <div class="chart-container" *ngIf="!isForecast">
-        <h2 class="chart-title">Histórico de precipitação</h2>
-        <app-precipitation-chart
-          *ngIf="isDaily"
-          [data]="lastPrecipitationDaily"
-          [isForecast]="false"
-          (datesChange)="onDatesChange($event)"
-          class="precipitation-chart"
-        ></app-precipitation-chart>
-        <app-precipitation-chart
-          *ngIf="!isDaily"
-          [data]="lastPrecipitationHourly"
-          [isForecast]="false"
-          [isDaily]="false"
-          (datesChange)="onDatesChange($event)"
-          class="precipitation-chart"
-        ></app-precipitation-chart>
-      </div>
+        <ng-template #historicalChart>
+          <div class="chart-container">
+            <h2 class="chart-title">Histórico de precipitação</h2>
+            <app-precipitation-chart
+              [data]="
+                isDaily ? lastPrecipitationDaily : lastPrecipitationHourly
+              "
+              [isForecast]="false"
+              [isDaily]="isDaily"
+              (datesChange)="onDatesChange($event)"
+              class="precipitation-chart"
+            ></app-precipitation-chart>
+          </div>
+        </ng-template>
+      </ng-container>
     </main>
+
     <footer>
       <div class="controls">
-        <button (click)="toggleForecastStationView()" class="btn large">
-          {{ isForecast ? "Histórico" : "Previsão" }}
+        <button
+          (click)="toggleForecastStationView()"
+          class="btn large"
+          type="button"
+        >
+          {{ isForecast ? "Ver Histórico" : "Ver Previsão" }}
         </button>
       </div>
       <img

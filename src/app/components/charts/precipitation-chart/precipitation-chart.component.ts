@@ -89,10 +89,63 @@ export class PrecipitationChartComponent implements OnInit, OnDestroy {
   }
 
   private createChart() {
-    const options: Highcharts.Options = precipitationOptionsChart(
-      this.chartData(),
-      this.isDaily
-    );
+    const options: Highcharts.Options = {
+      title: {
+        text: '',
+      },
+      plotOptions: {
+        column: {
+          pointPadding: 0,
+          borderWidth: 1,
+          groupPadding: 0,
+        },
+      },
+      xAxis: {
+        type: 'datetime',
+        ...(this.isDaily
+          ? {
+              labels: {
+                useHTML: true,
+                formatter: function () {
+                  const date = new Date(this.value);
+                  date.setDate(date.getDate() + 1);
+                  const weekday = date.toLocaleDateString('en-US', {
+                    weekday: 'short',
+                  });
+                  const formattedDate = `${String(date.getDate()).padStart(
+                    2,
+                    '0'
+                  )}/${String(date.getMonth() + 1).padStart(2, '0')}`;
+                  return `<div style="text-align: center;">
+                      <div style="font-size: 10px;">${formattedDate}</div>
+                      <div style="font-size: 14px; font-weight: bold;">${weekday}</div>
+                    </div>`;
+                },
+              },
+            }
+          : {}),
+        minTickInterval: (this.isDaily ? 24 : 1) * 3600 * 1000,
+        startOnTick: true,
+      },
+      yAxis: {
+        title: {
+          text: 'Precipitação (mm)',
+        },
+        min: 0,
+        minRange: 1,
+      },
+      colors: ['#3667a6'],
+      series: [
+        {
+          type: 'column',
+          name: 'Precipitação',
+          data: this.chartData().map((point) => [
+            point.date.getTime(),
+            point.value,
+          ]),
+        },
+      ],
+    };
 
     this.chart = Highcharts.chart(this.chartContainer.nativeElement, options);
   }
