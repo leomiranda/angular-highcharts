@@ -1,9 +1,11 @@
 import {
   Component,
   ElementRef,
+  EventEmitter,
   Input,
   OnDestroy,
   OnInit,
+  Output,
   signal,
   SimpleChanges,
   ViewChild,
@@ -25,6 +27,7 @@ export class PrecipitationChartComponent implements OnInit, OnDestroy {
   @Input() data: IDataChart[] | IDataChart[][] = [];
   @Input() isDaily: boolean = true;
   @ViewChild('chartContainer', { static: true }) chartContainer!: ElementRef;
+  @Output() datesChange = new EventEmitter<Date[]>();
 
   private chart!: Highcharts.Chart;
   public chartDataArray = signal<IDataChart[][]>([]);
@@ -51,6 +54,7 @@ export class PrecipitationChartComponent implements OnInit, OnDestroy {
       ? (this.data as IDataChart[])
       : (this.data[this.currentHourBlock()] as IDataChart[]);
     this.chartData.set(currentData);
+    this.emitDates(currentData as IDataChart[]);
   }
 
   nextHourBlock() {
@@ -132,11 +136,17 @@ export class PrecipitationChartComponent implements OnInit, OnDestroy {
     this.chart = Highcharts.chart(this.chartContainer.nativeElement, options);
   }
 
+  private emitDates(data: IDataChart[]): void {
+    const datesToShow = data.map((item: IDataChart) => item.date);
+    this.datesChange.emit(datesToShow);
+  }
+
   private updateChart() {
     if (this.chart) {
       const currentData = this.isDaily
         ? this.data
         : this.data[this.currentHourBlock()];
+      this.emitDates(currentData as IDataChart[]);
       this.chart.series[0].setData(
         (currentData as IDataChart[]).map((point: IDataChart) => [
           point.date.getTime(),

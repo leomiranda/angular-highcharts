@@ -1,7 +1,10 @@
 <div class="forecast-app">
   <div class="container">
     <main>
-      <h1 class="app-title">Angular Test</h1>
+      <div class="header">
+        <h1>Precipitações</h1>
+        <app-date-range [dates]="chartDates"></app-date-range>
+      </div>
 
       <div class="controls">
         <div class="select-wrapper">
@@ -17,8 +20,8 @@
           </select>
         </div>
 
-        <button (click)="toggleForecastStationView()" class="btn large">
-          {{ isForecast ? "Histórico" : "Previsão" }}
+        <button (click)="toggleDailyHourlyView()" class="btn large">
+          Por {{ isDaily ? "Hora" : "Dia" }}
         </button>
       </div>
 
@@ -28,12 +31,14 @@
         <app-precipitation-chart
           *ngIf="isDaily"
           [data]="nextPrecipitationDaily"
+          (datesChange)="onDatesChange($event)"
           class="precipitation-chart"
         ></app-precipitation-chart>
         <app-precipitation-chart
           *ngIf="!isDaily"
           [data]="nextPrecipitationHourly"
           [isDaily]="false"
+          (datesChange)="onDatesChange($event)"
           class="precipitation-chart"
         ></app-precipitation-chart>
       </div>
@@ -43,20 +48,22 @@
         <app-precipitation-chart
           *ngIf="isDaily"
           [data]="lastPrecipitationDaily"
+          (datesChange)="onDatesChange($event)"
           class="precipitation-chart"
         ></app-precipitation-chart>
         <app-precipitation-chart
           *ngIf="!isDaily"
           [data]="lastPrecipitationHourly"
           [isDaily]="false"
+          (datesChange)="onDatesChange($event)"
           class="precipitation-chart"
         ></app-precipitation-chart>
       </div>
     </main>
     <footer>
       <div class="controls">
-        <button (click)="toggleDailyHourlyView()" class="btn large">
-          Por {{ isDaily ? "Hora" : "Dia" }}
+        <button (click)="toggleForecastStationView()" class="btn large">
+          {{ isForecast ? "Histórico" : "Previsão" }}
         </button>
       </div>
       <img
