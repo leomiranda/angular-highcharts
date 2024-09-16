@@ -1,3 +1,6 @@
+![image](https://github.com/user-attachments/assets/4fa13885-8843-423b-8c3b-25b1cf33c455)
+
+
 # PlenoAngularTest
 Como usuário gostaria de ter um seletor de pontos, e ao selecionar um ponto, gostaria de que um gráfico de highcharts fosse exibido mostrando os dados de precipitação passados e futuros. No gráfico gostaria de que houvesse a possibilidade de navegar entre dados diários e horarios. Também gostaria de poder ver somente de 12 em 12 horas, podendo navegar para frente e para trás. No caso de diário, somente 7 dias para frente e para trás. 
 
