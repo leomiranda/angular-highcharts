@@ -1,19 +1,37 @@
 <div class="precipitation-chart">
   <div #chartContainer class="chart-container"></div>
   <div *ngIf="!isDaily" class="chart-controls">
-    <button
-      (click)="previousHourBlock()"
-      [disabled]="currentHourBlock() === chartDataArray().length - 1"
-      class="btn chart-btn"
-    >
-      <span class="btn-icon">&#8592;</span> Mais antigos
-    </button>
-    <button
-      (click)="nextHourBlock()"
-      [disabled]="currentHourBlock() === 0"
-      class="btn chart-btn"
-    >
-      Mais recentes <span class="btn-icon">&#8594;</span>
-    </button>
+    <ng-container *ngIf="!isForecast; else invertedButtons">
+      <button
+        (click)="previousHourBlock()"
+        [disabled]="currentHourBlock() === chartDataArray().length - 1"
+        class="btn chart-btn"
+      >
+        <span class="btn-icon">&#8592;</span> Mais antigos
+      </button>
+      <button
+        (click)="nextHourBlock()"
+        [disabled]="currentHourBlock() === 0"
+        class="btn chart-btn"
+      >
+        Mais recentes <span class="btn-icon">&#8594;</span>
+      </button>
+    </ng-container>
+    <ng-template #invertedButtons>
+      <button
+        (click)="nextHourBlock()"
+        [disabled]="currentHourBlock() === 0"
+        class="btn chart-btn"
+      >
+        <span class="btn-icon">&#8592;</span> Mais antigos
+      </button>
+      <button
+        (click)="previousHourBlock()"
+        [disabled]="currentHourBlock() === chartDataArray().length - 1"
+        class="btn chart-btn"
+      >
+        Mais recentes <span class="btn-icon">&#8594;</span>
+      </button>
+    </ng-template>
   </div>
 </div>

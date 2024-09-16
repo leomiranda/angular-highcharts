@@ -31,12 +31,14 @@
         <app-precipitation-chart
           *ngIf="isDaily"
           [data]="nextPrecipitationDaily"
+          [isForecast]="true"
           (datesChange)="onDatesChange($event)"
           class="precipitation-chart"
         ></app-precipitation-chart>
         <app-precipitation-chart
           *ngIf="!isDaily"
           [data]="nextPrecipitationHourly"
+          [isForecast]="true"
           [isDaily]="false"
           (datesChange)="onDatesChange($event)"
           class="precipitation-chart"
@@ -48,12 +50,14 @@
         <app-precipitation-chart
           *ngIf="isDaily"
           [data]="lastPrecipitationDaily"
+          [isForecast]="false"
           (datesChange)="onDatesChange($event)"
           class="precipitation-chart"
         ></app-precipitation-chart>
         <app-precipitation-chart
           *ngIf="!isDaily"
           [data]="lastPrecipitationHourly"
+          [isForecast]="false"
           [isDaily]="false"
           (datesChange)="onDatesChange($event)"
           class="precipitation-chart"

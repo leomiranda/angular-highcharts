@@ -112,7 +112,9 @@ export class AppComponent implements OnInit {
     );
 
     this.nextPrecipitationHourly = getLastXHoursForForecastInBlocks(
-      point.forecast.data_1h
+      point.forecast.data_1h,
+      12,
+      14
     );
   }
 }

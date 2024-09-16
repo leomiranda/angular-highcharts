@@ -26,14 +26,16 @@ more(Highcharts);
 export class PrecipitationChartComponent implements OnInit, OnDestroy {
   @Input() data: IDataChart[] | IDataChart[][] = [];
   @Input() isDaily: boolean = true;
-  @ViewChild('chartContainer', { static: true }) chartContainer!: ElementRef;
+  @Input() isForecast: boolean = true;
+  @ViewChild('chartContainer', { static: true })
+  private chartContainer!: ElementRef;
   @Output() datesChange = new EventEmitter<Date[]>();
 
-  private chart!: Highcharts.Chart;
   public chartDataArray = signal<IDataChart[][]>([]);
   public chartData = signal<IDataChart[]>([]);
   public currentHourBlock = signal(0);
-  public hourBlocks: { date: Date; value: number }[][] = [];
+
+  private chart!: Highcharts.Chart;
 
   ngOnInit() {
     this.chartDataArray.set(this.isDaily ? [] : (this.data as IDataChart[][]));
@@ -49,22 +51,14 @@ export class PrecipitationChartComponent implements OnInit, OnDestroy {
     }
   }
 
-  updateChartData() {
-    const currentData = this.isDaily
-      ? (this.data as IDataChart[])
-      : (this.data[this.currentHourBlock()] as IDataChart[]);
-    this.chartData.set(currentData);
-    this.emitDates(currentData as IDataChart[]);
-  }
-
-  nextHourBlock() {
+  public nextHourBlock() {
     if (this.currentHourBlock() > 0) {
       this.currentHourBlock.update((v) => v - 1);
     }
     this.updateChart();
   }
 
-  previousHourBlock() {
+  public previousHourBlock() {
     const currentData = this.isDaily
       ? (this.data as IDataChart[])
       : (this.data[this.currentHourBlock()] as IDataChart[]);
@@ -72,6 +66,20 @@ export class PrecipitationChartComponent implements OnInit, OnDestroy {
       this.currentHourBlock.update((v) => v + 1);
     }
     this.updateChart();
+  }
+
+  ngOnDestroy() {
+    if (this.chart) {
+      this.chart.destroy();
+    }
+  }
+
+  private updateChartData() {
+    const currentData = this.isDaily
+      ? (this.data as IDataChart[])
+      : (this.data[this.currentHourBlock()] as IDataChart[]);
+    this.chartData.set(currentData);
+    this.emitDates(currentData as IDataChart[]);
   }
 
   private createChart() {
@@ -153,12 +161,6 @@ export class PrecipitationChartComponent implements OnInit, OnDestroy {
           point.value,
         ])
       );
-    }
-  }
-
-  ngOnDestroy() {
-    if (this.chart) {
-      this.chart.destroy();
     }
   }
 }
